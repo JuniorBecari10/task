@@ -2,6 +2,8 @@
 #include "list.h"
 
 Schedule init_schedule() {
+    // TODO: read from file and lock the file
+    
     return (Schedule) {
         .daily = new_list(sizeof(TaskDaily)),
         .weekly = new_list(sizeof(TaskWeekly)),

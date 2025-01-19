@@ -2,12 +2,21 @@
 #define TASK_H
 
 #include <stdint.h>
+
 #include "list.h"
 
 typedef uint8_t WeekDay;
 typedef uint8_t MonthDay;
 typedef uint8_t Month;
 typedef int32_t Year;
+
+typedef enum {
+    FREQ_DAILY,
+    FREQ_WEEKLY,
+    FREQ_MONTHLY,
+    FREQ_YEARLY,
+    FREQ_ONCE,
+} FrequencyType;
 
 typedef struct {
     List daily;
@@ -26,8 +35,10 @@ typedef enum {
 
 typedef struct {
     char *name;
-    char *id;
+    // char *id;
+
     TaskState state;
+    FrequencyType frequency;
 } Task;
 
 typedef struct {
