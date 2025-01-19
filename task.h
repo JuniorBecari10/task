@@ -1,10 +1,21 @@
-#ifndef MODEL_H
-#define MODEL_H
+#ifndef TASK_H
+#define TASK_H
 
 #include <stdint.h>
 #include "list.h"
 
-#define SCHEDULE_MAX 4096
+typedef uint8_t WeekDay;
+typedef uint8_t MonthDay;
+typedef uint8_t Month;
+typedef int32_t Year;
+
+typedef struct {
+    List daily;
+    List weekly;
+    List monthly;
+    List yearly;
+    List once;
+} Schedule;
 
 typedef enum {
     STATE_DONE,
@@ -20,16 +31,6 @@ typedef struct {
 } Task;
 
 typedef struct {
-    TaskDaily daily[SCHEDULE_MAX];
-    TaskWeek week[SCHEDULE_MAX];
-    TaskMonth month[SCHEDULE_MAX];
-    TaskYear year[SCHEDULE_MAX];
-    TaskOnce once[SCHEDULE_MAX];
-} Schedule;
-
-// ---
-
-typedef struct {
     uint8_t hour;
     uint8_t minute;
 } Hour;
@@ -38,11 +39,6 @@ typedef struct {
     MonthDay day;
     uint8_t month;
 } YearDay;
-
-typedef uint8_t WeekDay;
-typedef uint8_t MonthDay;
-typedef uint8_t Month;
-typedef int32_t Year;
 
 // ---
 
@@ -56,14 +52,14 @@ typedef struct {
     
     WeekDay day;
     Hour hour;
-} TaskWeek;
+} TaskWeekly;
 
 typedef struct {
     Task task;
     
     MonthDay day;
     Hour hour;
-} TaskMonth;
+} TaskMonthly;
 
 typedef struct {
     Task task;
@@ -72,7 +68,7 @@ typedef struct {
     Month month;
     
     Hour hour;
-} TaskYear;
+} TaskYearly;
 
 typedef struct {
     Task task;
@@ -83,5 +79,8 @@ typedef struct {
 
     Hour hour;
 } TaskOnce;
+
+Schedule init_schedule();
+void free_schedule(Schedule *schedule);
 
 #endif
