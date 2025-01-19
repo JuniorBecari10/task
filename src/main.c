@@ -5,7 +5,7 @@
 #include "operation.h"
 
 int main(int argc, char *argv[]) {
-    // to parse the operation we don't need to initialize
+    // to parse the operation we don't need to initialize things
     Operation operation = parse_operation(argc, argv);
 
     // if it's been typed incorrectly we bail out.

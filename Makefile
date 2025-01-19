@@ -1,2 +1,2 @@
 default:
-	gcc *.c -Wall -Werror -Wextra -std=c11 -o main -g
+	gcc src/*.c -Wall -Wextra -std=c11 -o main -g

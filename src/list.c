@@ -4,9 +4,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-List new_list(size_t element_size) {
+List new_list(size_t element_size, DropFn drop_fn) {
     return (List) {
         .list = malloc(element_size * 10),
+        .drop_fn = drop_fn,
+
         .element_size = element_size,
         .cap = 10,
         .len = 0,
@@ -47,6 +49,11 @@ void list_remove(List *list, size_t index) {
 
 // Function to free the list
 void free_list(List *list) {
+    // TODO: fix this warning
+    for (size_t i = 0; i < list->len; i++) {
+        list->drop_fn((void*)(&list->list[i * list->element_size]));
+    }
+
     free(list->list);
     
     list->list = NULL;

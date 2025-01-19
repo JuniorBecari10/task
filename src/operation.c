@@ -73,7 +73,7 @@ Operation parse_operation(int argc, char *argv[]) {
                         break;
                 }
 
-                // we haven't assigned to 'operation', so we simply return it.
+                // we haven't assigned to 'operation', so we simply return it, and the default value will be returned.
                 return operation;
             }
 
