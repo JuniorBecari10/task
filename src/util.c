@@ -2,16 +2,52 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <inttypes.h>
 #include <string.h>
+#include <time.h>
 
 static char* get_home_task_file();
 
 void init_util() {
     TASKS_FILE_PATH = get_home_task_file();
+    srand((unsigned int) time(NULL));
 }
 
 void free_util() {
     free(TASKS_FILE_PATH);
+}
+
+// returns NULL on error, or when the file doesn't exist.
+// 1 -> not enough memory
+// 2 -> "could not read"
+char* read_file(const char* path, uint32_t *out_length) {
+    FILE* file = fopen(path, "rb");
+
+    // the file couldn't be open, mostly because it doesn't exist
+    if (file == NULL)
+        return NULL;
+
+    fseek(file, 0L, SEEK_END);
+    size_t file_size = ftell(file);
+    rewind(file);
+
+    char* buffer = (char*) malloc(file_size + 1);
+
+    // not enough memory
+    if (buffer == NULL)
+        return VOID(1);
+
+    size_t bytes_read = fread(buffer, sizeof(char), file_size, file);
+
+    // could not read file
+    if (bytes_read < file_size)
+        return VOID(2);
+    
+    buffer[bytes_read] = '\0';
+    fclose(file);
+
+    *out_length = file_size + 1;
+    return buffer;
 }
 
 // ---
@@ -19,7 +55,7 @@ void free_util() {
 static char* get_home_task_file() {
     const char *home_dir = getenv("HOME");
     if (home_dir == NULL) {
-        fprintf(stderr, "Error: HOME environment variable is not set.\n");
+        ERROR("Error: HOME environment variable is not set.\n");
         return NULL;
     }
 
@@ -27,7 +63,7 @@ static char* get_home_task_file() {
     char *task_file_path = (char*) malloc(full_path_len);
 
     if (task_file_path == NULL) {
-        fprintf(stderr, "Error: Memory allocation failed while generating tasks file path.\n");
+        ERROR("Error: Memory allocation failed while generating tasks file path.\n");
         return NULL;
     }
 

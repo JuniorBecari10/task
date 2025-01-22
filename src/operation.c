@@ -14,6 +14,8 @@ typedef enum {
 static Operation default_operation();
 static Hour parse_hour(char *str, ParseHourError *out_error);
 
+// early returns of Operations mean exiting the program
+// which will be done in main()
 Operation parse_operation(int argc, char *argv[]) {
     Operation operation = default_operation();
 
@@ -80,18 +82,22 @@ Operation parse_operation(int argc, char *argv[]) {
             TaskDaily daily = {
                 .task = {
                     .name = name,
-                    // .id = TODO,
+                    .id = generate_id(),
                     .state = STATE_ACTIVE,
                     .frequency = FREQ_DAILY,
                 },
                 .hour = hour,
             };
 
+            printf("%ld\n", daily.task.id);
+
             operation.type = OP_ADD;
             operation.operation.add.frequency = (Frequency) {
                 .type = FREQ_DAILY,
                 .frequency.daily = daily,
             };
+
+            // return
         }
 
         else {

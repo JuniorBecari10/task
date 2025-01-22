@@ -16,7 +16,6 @@ int main(int argc, char *argv[]) {
     init_util();
     Schedule schedule = init_schedule();
 
-
     free_schedule(&schedule);
     free_util();
 

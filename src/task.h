@@ -35,7 +35,7 @@ typedef enum {
 
 typedef struct {
     char *name;
-    char *id; // if it was a number?
+    uint64_t id;
 
     TaskState state;
     FrequencyType frequency;
@@ -93,6 +93,7 @@ typedef struct {
 
 Schedule init_schedule();
 void free_schedule(Schedule *schedule);
-void drop_task(Task *task);
+
+uint64_t generate_id();
 
 #endif

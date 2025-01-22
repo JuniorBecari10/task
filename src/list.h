@@ -3,22 +3,21 @@
 
 #include <stdlib.h>
 
-// the function used to drop the list elements
-typedef void (*DropFn)(void *);
-
 typedef struct {
     void *list;
-    DropFn drop_fn;
 
     size_t element_size;
     size_t cap;
     size_t len;
 } List;
 
-List new_list(size_t element_size, DropFn drop_fn);
+List new_list(size_t element_size);
 
 void list_append(List *list, void *element);
 void list_remove(List *list, size_t index);
+
+void *list_get(List *list, size_t index);
+void *list_get_unchecked(List *list, size_t index);
 
 void free_list(List *list);
 
