@@ -20,6 +20,8 @@ void free_util() {
 // returns NULL on error, or when the file doesn't exist.
 // 1 -> not enough memory
 // 2 -> "could not read"
+
+// if an error occurs, 'out_length' won't be set.
 char* read_file(const char* path, uint32_t *out_length) {
     FILE* file = fopen(path, "rb");
 
